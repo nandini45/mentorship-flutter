@@ -91,6 +91,13 @@ class _RegisterFormState extends State<RegisterForm> {
     });
   }
 
+  void _toggleMenteeAndMentor(bool value) {
+    setState(() {
+      _needsMentoring = !_needsMentoring;
+      _availableToMentor = !_availableToMentor;
+    });
+  }
+
   void _toggleTermsAndConditions(bool value) {
     setState(() {
       _acceptedTermsAndConditions = !_acceptedTermsAndConditions;
@@ -182,6 +189,15 @@ class _RegisterFormState extends State<RegisterForm> {
                     onChanged: _toggleNeedsMentoring,
                   ),
                   Text("Mentee"),
+                ],
+              ),
+              Row(
+                children: [
+                  Checkbox(
+                    value: _needsMentoring,
+                    onChanged: _toggleMenteeAndMentor,
+                  ),
+                  Text("Both"),
                 ],
               ),
             ],
