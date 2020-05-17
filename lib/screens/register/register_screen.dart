@@ -50,6 +50,7 @@ class _RegisterFormState extends State<RegisterForm> {
   bool _passwordVisible = false;
   bool _availableToMentor = false;
   bool _needsMentoring = false;
+  bool _needsBoth = false;
   bool _acceptedTermsAndConditions = false;
 
   void _togglePasswordVisibility() {
@@ -80,21 +81,28 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   void _toggleAvailableToMentor(bool value) {
-    setState(() {
-      _availableToMentor = !_availableToMentor;
-    });
+    _needsMentoring && value
+        ? _toggleMenteeAndMentor(value)
+        : setState(() {
+            _availableToMentor = value;
+            _needsBoth = false;
+          });
   }
 
   void _toggleNeedsMentoring(bool value) {
-    setState(() {
-      _needsMentoring = !_needsMentoring;
-    });
+    _availableToMentor && value
+        ? _toggleMenteeAndMentor(value)
+        : setState(() {
+            _needsMentoring = value;
+            _needsBoth = false;
+          });
   }
 
   void _toggleMenteeAndMentor(bool value) {
     setState(() {
-      _needsMentoring = !_needsMentoring;
-      _availableToMentor = !_availableToMentor;
+      _needsBoth = value;
+      _needsMentoring = value;
+      _availableToMentor = value;
     });
   }
 
@@ -194,8 +202,11 @@ class _RegisterFormState extends State<RegisterForm> {
               Row(
                 children: [
                   Checkbox(
-                    value: _needsMentoring,
-                    onChanged: _toggleMenteeAndMentor,
+                    value: _needsBoth,
+                    onChanged: (value) {
+                      print(value);
+                      _toggleMenteeAndMentor(value);
+                    },
                   ),
                   Text("Both"),
                 ],
